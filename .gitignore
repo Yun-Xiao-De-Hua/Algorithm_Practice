@@ -1,0 +1,42 @@
+# 忽略 Visual Studio 自动生成的诊断文件
+*.VC.db
+*.VC.VC.opendb
+
+# 忽略 Visual Studio 用户相关的配置文件
+*.suo
+*.user
+*.user.*
+*.sln.docstates
+
+# 忽略 Visual Studio 解决方案和项目的缓存/临时文件
+# 这是最重要的一条，.vs 文件夹可能非常大
+.vs/
+
+# 忽略构建输出目录
+[Bb]in/
+[Dd]ebug/
+[Rr]elease/
+x64/
+Win32/
+ARM/
+ARM64/
+bld/
+[Oo]bj/
+[Ll]og/
+
+# 忽略构建输出的具体文件类型
+*.pdb
+*.exe
+*.dll
+*.obj
+*.ilk
+*.tlog
+*.lib
+*.sbr
+*.pch
+*.idb
+*.ipch
+
+# 忽略由包管理器（如 NuGet）生成的文件
+packages/
+*.nupkg
