@@ -141,6 +141,105 @@ matrix calculateByKJI(matrix& A, matrix& B, int m, int p, int n)
 }
 
 
+// --------------------统计缓存缺失次数--------------------
+
+long long calCacheMissByIJK(int m, int p, int n, int w)
+{
+	long long miss = 0;
+
+	// A缺失次数
+	miss += (long long)(m * n * p / w);
+
+	// B缺失次数
+	miss += (long long)(m * n * p);
+
+	// C缺失次数
+	miss += (long long)(m * n / w);
+
+	return miss;
+}
+
+long long calCacheMissByIKJ(int m, int p, int n, int w)
+{
+	long long miss = 0;
+
+	// A缺失次数
+	miss += (long long)(m * p / w);
+
+	// B缺失次数
+	miss += (long long)(m * n * p / w);
+
+	// C缺失次数
+	miss += (long long)(m * n / w);
+
+	return miss;
+}
+
+long long calCacheMissByJIK(int m, int p, int n, int w)
+{
+	long long miss = 0;
+
+	// A缺失次数
+	miss += (long long)(n * m * p / w);
+
+	// B缺失次数
+	miss += (long long)(n * m * p);
+
+	// C缺失次数
+	miss += (long long)(n * m);
+
+	return miss;
+}
+
+long long calCacheMissByJKI(int m, int p, int n, int w)
+{
+	long long miss = 0;
+
+	// A缺失次数
+	miss += (long long)(n * p * m);
+
+	// B缺失次数
+	miss += (long long)(n * p);
+
+	// C缺失次数
+	miss += (long long)(n * p * m);
+
+	return miss;
+}
+
+long long calCacheMissByKIJ(int m, int p, int n, int w)
+{
+	long long miss = 0;
+
+	// A缺失次数
+	miss += (long long)(p * m);
+
+	// B缺失次数
+	miss += (long long)(p * m * n / w);
+
+	// C缺失次数
+	miss += (long long)(p * m * n / w);
+
+	return miss;
+}
+
+long long calCacheMissByKJI(int m, int p, int n, int w)
+{
+	long long miss = 0;
+
+	// A缺失次数
+	miss += (long long)(p * n * m);
+
+	// B缺失次数
+	miss += (long long)(p * n / w);
+
+	// C缺失次数
+	miss += (long long)(p * n * m);
+
+	return miss;
+}
+
+
 int main()
 {
 	// 定义测试矩阵A，B，对应结果矩阵为C
@@ -156,6 +255,7 @@ int main()
 	std::cout << "  A: " << m << " x " << p << std::endl;
 	std::cout << "  B: " << p << " x " << n << std::endl;
 	std::cout << "  C: " << m << " x " << n << std::endl << std::endl;
+
 
 	// 创建测试矩阵
 	matrix A(m,std::vector<int>(p,0));
@@ -188,6 +288,28 @@ int main()
 	measureTime("kji", calculateByKJI);
 	measureTime("jik", calculateByJIK);
 	measureTime("jki", calculateByJKI);
+
+	// 统计6种不同计算方式缓存缺失次数
+	int w = 1;
+	auto measureMiss = [&](const std::string& method, auto func)
+		{
+			long long miss = 0;
+			miss = func(m, p, n, w);
+			std::cout << "(Case" << w << ") Cache line width: " << w << " elements" << std::endl;
+			std::cout << "Running " << method << " order..." << std::endl;
+			std::cout << "Cache miss times: " << miss << std::endl;
+		};
+
+	std::cout << std::endl << "Start cache miss times test for w ranging from 1 to 10: " << std::endl;
+
+	for (w; w <= 10; w++) {
+		measureMiss("ijk", calCacheMissByIJK);
+		measureMiss("ikj", calCacheMissByIKJ);
+		measureMiss("JIK", calCacheMissByJIK);
+		measureMiss("JKI", calCacheMissByJKI);
+		measureMiss("KIJ", calCacheMissByKIJ);
+		measureMiss("KJI", calCacheMissByKJI);
+	}
 
 	return 0;
 }
