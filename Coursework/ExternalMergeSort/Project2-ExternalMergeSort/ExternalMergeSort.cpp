@@ -24,7 +24,7 @@ int generateRandomInt(int min, int max)
 // 外部测试文件生成
 void generateTestFile(const std::string fileName, long long recordNum)
 {
-	std::ofstream outFile(fileName, std::ios::binary | std::ios::app);
+	std::ofstream outFile(fileName, std::ios::binary);
 
 	// 定义缓存区
 	const int CHUNK_SIZE = 10000;
@@ -99,7 +99,7 @@ std::vector<std::string> generateRuns(const std::string intputFile, const int CH
 		// 模拟内存大小
 		std::vector<int> chunk(CHUNK_SIZE);
 
-		infile.read(reinterpret_cast<char*>(chunk.data()), CHUNK_SIZE);
+		infile.read(reinterpret_cast<char*>(chunk.data()), CHUNK_SIZE * sizeof(int));
 
 		// 确定实际读入的数据量
 		std::streamsize elementsRead = infile.gcount() / sizeof(int);
@@ -142,7 +142,7 @@ void mergeTwoFiles(std::string& inputFile1, std::string& inputFile2, std::string
 	// 打开文件
 	std::ifstream in1(inputFile1, std::ios::binary);
 	std::ifstream in2(inputFile2, std::ios::binary);
-	std::ofstream out(outputFile, std::ios::binary | std::ios::app);
+	std::ofstream out(outputFile, std::ios::binary);
 
 	// 定义输入/输出缓冲区大小
 	const int BUFFER_SIZE = 1024;	// 4KB/sizeof(int)
@@ -163,7 +163,7 @@ void mergeTwoFiles(std::string& inputFile1, std::string& inputFile2, std::string
 	size_t size2 = in2.gcount() / sizeof(int);
 
 	// 只要输入缓冲区非空，就继续归并
-	while (idx1 < size1 || idx2 < size2) {
+	while (size1 > 0 || size2 > 0) {
 		// 输出缓冲区满，则进行一次IO
 		if (idxOut == BUFFER_SIZE) {
 			out.write(reinterpret_cast<const char*>(bufferOut.data()), BUFFER_SIZE * sizeof(int));
@@ -172,11 +172,11 @@ void mergeTwoFiles(std::string& inputFile1, std::string& inputFile2, std::string
 
 		// 若输入缓冲区2耗尽，只能从缓冲区1加载
 		// 若缓冲区1元素小于缓冲区2元素，从缓冲区1加载
-		if (idx2 >= size2 || (idx1 < size1 && buffer1[idx1] < buffer2[idx2])) {
+		if (size2 == 0 || (size1 > 0 && buffer1[idx1] <= buffer2[idx2])) {
 			bufferOut[idxOut++] = buffer1[idx1++];
 
-			// 更新输入缓冲区
-			if (idx1 >= size1) {
+			// 输入缓冲区耗尽，更新输入缓冲区
+			if (idx1 == size1) {
 				in1.read(reinterpret_cast<char*>(buffer1.data()), BUFFER_SIZE * sizeof(int));
 				size1 = in1.gcount() / sizeof(int);
 				idx1 = 0;
@@ -185,8 +185,8 @@ void mergeTwoFiles(std::string& inputFile1, std::string& inputFile2, std::string
 		else {
 			bufferOut[idxOut++] = buffer2[idx2++];
 
-			// 更新输入缓冲区
-			if (idx2 >= size2) {
+			// 输入缓冲区耗尽，更新输入缓冲区
+			if (idx2 == size2) {
 				in2.read(reinterpret_cast<char*>(buffer2.data()), BUFFER_SIZE * sizeof(int));
 				size2 = in2.gcount() / sizeof(int);
 				idx2 = 0;
@@ -259,7 +259,7 @@ bool checkResult(const std::string& ResultFile)
 	// 截止目前检查的元素数量
 	long long eleCheckedNum = 0;
 
-	while (in.read(reinterpret_cast<char*>(buffer.data()), BUFFER_SIZE * sizeof(int))&&in.gcount()>0) {
+	while (in.read(reinterpret_cast<char*>(buffer.data()), BUFFER_SIZE * sizeof(int))||in.gcount()>0) {
 
 		int realEleNum = in.gcount() / sizeof(int);
 		if (realEleNum == 0)
@@ -304,7 +304,7 @@ int main()
 {
 	std::string testFile = "test_file";
 	long long recordNum = 100000000;
-	const int CHUNK_SIZE = 36 * 1024 * 1024;	// 36MB，刚好可以得到奇数个顺串
+	const int CHUNK_SIZE = 9 * 1024 * 1024;	// 刚好可以得到奇数个顺串
 
 	// 测试文件生成
 	std::cout << "Start generating testfile... " << std::endl;
@@ -343,7 +343,7 @@ int main()
 	if (checkResult(resultFileName))
 		std::cout << "The final result is correct!" << std::endl;
 	else
-		std::cerr << "Some error occured.The final result is incorrect" << std::endl;
+		std::cerr << "Some error occured. The final result is incorrect" << std::endl;
 
 	return 0;
 }
