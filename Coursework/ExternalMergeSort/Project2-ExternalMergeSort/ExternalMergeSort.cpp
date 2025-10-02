@@ -241,6 +241,64 @@ void mergeRuns(std::vector<std::string>& runFiles, const std::string& finalResul
 		std::rename(runFiles[0].c_str(), finalResultFile.c_str());
 }
 
+// 结果文件检查函数：检测数据是否非降序排列
+bool checkResult(const std::string& ResultFile)
+{
+	std::ifstream in(ResultFile, std::ios::binary);
+
+	// 定义一个缓冲区，进行流式检查
+	const int BUFFER_SIZE = 1000;
+	std::vector<int> buffer(BUFFER_SIZE);
+
+	// 储存缓冲区中的最后一个元素，用于和下次加载入缓冲区的首元素进行比较
+	int lastEleOfPreBuffer;
+
+	// 是否为首次读取
+	bool isFirstBuffer = true;
+
+	// 截止目前检查的元素数量
+	long long eleCheckedNum = 0;
+
+	while (in.read(reinterpret_cast<char*>(buffer.data()), BUFFER_SIZE * sizeof(int))&&in.gcount()>0) {
+
+		int realEleNum = in.gcount() / sizeof(int);
+		if (realEleNum == 0)
+			continue;
+
+		// 检查上次的尾元素和当次的首元素大小关系
+		if (!isFirstBuffer) {
+			if (lastEleOfPreBuffer > buffer[0]) {
+				std::cerr << "Element" << buffer[0] << " at index " << eleCheckedNum 
+					<< " is smaller than the previous element " << lastEleOfPreBuffer << std::endl;
+
+				in.close();
+				return false;
+			}
+		}
+		isFirstBuffer = false;
+
+		// 检查buffer内部元素大小关系
+		for (int i = 1; i < realEleNum; i++) {
+			if (buffer[i - 1] > buffer[i]) {
+				std::cerr << "Element" << buffer[i - 1] << " at index " << eleCheckedNum + i
+					<< " is larger than the latter element " << buffer[i] << " at index " << eleCheckedNum + i + 1 << std::endl;
+
+				in.close();
+				return false;
+			}
+		}
+
+		// 更新缓冲区尾元素
+		lastEleOfPreBuffer = buffer[realEleNum - 1];
+
+		// 更新已检查元素数量
+		eleCheckedNum += realEleNum;
+	}
+
+	in.close();
+	return true;
+}
+
 
 int main()
 {
@@ -281,19 +339,11 @@ int main()
 	const std::string resultFileName = "sort_output.bin";
 	mergeRuns(runsFileNames, resultFileName);
 
-	// 检查部分归并文件结果
-	const int CHECK_SIZE = 100000;
-	std::vector<int> checkArr(CHECK_SIZE);
+	// 检查归并文件结果
+	if (checkResult(resultFileName))
+		std::cout << "The final result is correct!" << std::endl;
+	else
+		std::cerr << "Some error occured.The final result is incorrect" << std::endl;
 
-	std::ifstream in(resultFileName, std::ios::binary);
-	in.read(reinterpret_cast<char*>(checkArr.data()), CHECK_SIZE * sizeof(int));
-	int realSize = in.gcount() / sizeof(int);
-
-	std::cout << "Final result: " << std::endl;
-	for (int i = 0; i < realSize;i ++) {
-		std::cout << checkArr[i] << ", ";
-		if (i > 0 && i % 10 == 0)
-			std::cout << std::endl;
-	}
 	return 0;
 }
