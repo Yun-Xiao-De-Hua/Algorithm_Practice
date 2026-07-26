@@ -55,6 +55,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "luogu-p12139", "luogu-p1213
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "binarysearch-template", "binarysearch-template\binarysearch-template.vcxproj", "{14D7F68A-0811-4CFD-8FFE-E6AFA08ED7E6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "luogu-p1824", "luogu-p1824\luogu-p1824.vcxproj", "{74332473-DEBA-4404-A3CF-7B1126D70A48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -271,6 +273,14 @@ Global
 		{14D7F68A-0811-4CFD-8FFE-E6AFA08ED7E6}.Release|x64.Build.0 = Release|x64
 		{14D7F68A-0811-4CFD-8FFE-E6AFA08ED7E6}.Release|x86.ActiveCfg = Release|Win32
 		{14D7F68A-0811-4CFD-8FFE-E6AFA08ED7E6}.Release|x86.Build.0 = Release|Win32
+		{74332473-DEBA-4404-A3CF-7B1126D70A48}.Debug|x64.ActiveCfg = Debug|x64
+		{74332473-DEBA-4404-A3CF-7B1126D70A48}.Debug|x64.Build.0 = Debug|x64
+		{74332473-DEBA-4404-A3CF-7B1126D70A48}.Debug|x86.ActiveCfg = Debug|Win32
+		{74332473-DEBA-4404-A3CF-7B1126D70A48}.Debug|x86.Build.0 = Debug|Win32
+		{74332473-DEBA-4404-A3CF-7B1126D70A48}.Release|x64.ActiveCfg = Release|x64
+		{74332473-DEBA-4404-A3CF-7B1126D70A48}.Release|x64.Build.0 = Release|x64
+		{74332473-DEBA-4404-A3CF-7B1126D70A48}.Release|x86.ActiveCfg = Release|Win32
+		{74332473-DEBA-4404-A3CF-7B1126D70A48}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
