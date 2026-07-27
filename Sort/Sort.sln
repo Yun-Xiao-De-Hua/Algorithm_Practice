@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stl-sort", "stl-sort\stl-so
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bucket-sort", "bucket-sort\bucket-sort.vcxproj", "{A05DE576-10F1-4864-93A4-DA657B3D9387}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stack-stl", "stack-stl\stack-stl.vcxproj", "{3B42633B-BBB9-41A0-98D1-5C33EC4DDDB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,14 @@ Global
 		{A05DE576-10F1-4864-93A4-DA657B3D9387}.Release|x64.Build.0 = Release|x64
 		{A05DE576-10F1-4864-93A4-DA657B3D9387}.Release|x86.ActiveCfg = Release|Win32
 		{A05DE576-10F1-4864-93A4-DA657B3D9387}.Release|x86.Build.0 = Release|Win32
+		{3B42633B-BBB9-41A0-98D1-5C33EC4DDDB5}.Debug|x64.ActiveCfg = Debug|x64
+		{3B42633B-BBB9-41A0-98D1-5C33EC4DDDB5}.Debug|x64.Build.0 = Debug|x64
+		{3B42633B-BBB9-41A0-98D1-5C33EC4DDDB5}.Debug|x86.ActiveCfg = Debug|Win32
+		{3B42633B-BBB9-41A0-98D1-5C33EC4DDDB5}.Debug|x86.Build.0 = Debug|Win32
+		{3B42633B-BBB9-41A0-98D1-5C33EC4DDDB5}.Release|x64.ActiveCfg = Release|x64
+		{3B42633B-BBB9-41A0-98D1-5C33EC4DDDB5}.Release|x64.Build.0 = Release|x64
+		{3B42633B-BBB9-41A0-98D1-5C33EC4DDDB5}.Release|x86.ActiveCfg = Release|Win32
+		{3B42633B-BBB9-41A0-98D1-5C33EC4DDDB5}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
